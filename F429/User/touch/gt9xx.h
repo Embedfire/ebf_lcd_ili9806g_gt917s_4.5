@@ -54,6 +54,7 @@ typedef enum
 {
 	GT9157=0,
 	GT911=1,
+  GT917S,
 }TOUCH_IC;
 
 
@@ -176,7 +177,7 @@ typedef enum
 #define GTP_READ_COOR_ADDR    0x814E
 #define GTP_REG_SLEEP         0x8040
 #define GTP_REG_SENSOR_ID     0x814A
-#define GTP_REG_CONFIG_DATA   0x8047
+#define GTP_REG_CONFIG_DATA   0x8050
 #define GTP_REG_VERSION       0x8140
 
 #define RESOLUTION_LOC        3

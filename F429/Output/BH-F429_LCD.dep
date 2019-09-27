@@ -1526,7 +1526,7 @@ I (..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma2d.h)(0x5D8D61E6)
 I (..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x5D8D61E6)
 I (..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_ltdc.h)(0x5D8D61E6)
 I (..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sai.h)(0x5D8D61E6)
-F (..\..\User\main.c)(0x5D8D61E6)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\User -I ..\..\User\sdram -I ..\..\User\lcd -I ..\..\User\font -I ..\..\User\usart -I ..\..\Libraries\CMSIS\Include-I.\RTE\_LCD-IE:\MDK\ARM\PACK\Keil\STM32F4xx_DFP\2.12.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IE:\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F429xx -DUSE_STDPERIPH_DRIVER -DSTM32F429_439xx --C99-o ..\..\output\main.o --omf_browse ..\..\output\main.crf --depend ..\..\output\main.d)
+F (..\..\User\main.c)(0x5D8DC202)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\User -I ..\..\User\sdram -I ..\..\User\lcd -I ..\..\User\font -I ..\..\User\usart -I ..\..\Libraries\CMSIS\Include-I.\RTE\_LCD-IE:\MDK\ARM\PACK\Keil\STM32F4xx_DFP\2.12.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IE:\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F429xx -DUSE_STDPERIPH_DRIVER -DSTM32F429_439xx --C99-o ..\..\output\main.o --omf_browse ..\..\output\main.crf --depend ..\..\output\main.d)
 I (..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x5D8D61E6)
 I (..\..\Libraries\CMSIS\Include\core_cm4.h)(0x5D8D61E6)
 I (E:\MDK\ARM\ARMCC\include\stdint.h)(0x57F606B8)
@@ -1570,7 +1570,7 @@ I (E:\MDK\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (..\..\User\./sdram/bsp_sdram.h)(0x5D8D61E6)
 I (..\..\User\./lcd/bsp_lcd.h)(0x5D8D61E6)
 I (..\..\User\./font/fonts.h)(0x5D8D61E6)
-I (..\..\User\./touch/gt9xx.h)(0x5D8D61E6)
+I (..\..\User\./touch/gt9xx.h)(0x5D8DC39E)
 I (..\..\User\./touch/palette.h)(0x5D8D61E6)
 F (..\..\User\stm32f4xx_it.c)(0x5D8D61E6)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\User -I ..\..\User\sdram -I ..\..\User\lcd -I ..\..\User\font -I ..\..\User\usart -I ..\..\Libraries\CMSIS\Include-I.\RTE\_LCD-IE:\MDK\ARM\PACK\Keil\STM32F4xx_DFP\2.12.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IE:\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F429xx -DUSE_STDPERIPH_DRIVER -DSTM32F429_439xx --C99-o ..\..\output\stm32f4xx_it.o --omf_browse ..\..\output\stm32f4xx_it.crf --depend ..\..\output\stm32f4xx_it.d)
 I (..\..\User\stm32f4xx_it.h)(0x5D8D61E6)
@@ -1613,7 +1613,7 @@ I (..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_ltdc.h)(0x5D8D61E6)
 I (..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sai.h)(0x5D8D61E6)
 I (..\..\User\./usart/bsp_debug_usart.h)(0x5D8D61E6)
 I (E:\MDK\ARM\ARMCC\include\stdio.h)(0x57F606B8)
-I (..\..\User\./touch/bsp_i2c_touch.h)(0x5D8D61E6)
+I (..\..\User\./touch/bsp_i2c_touch.h)(0x5D8DBA29)
 I (..\..\User\./led/bsp_led.h)(0x5D8D61E6)
 F (..\..\User\led\bsp_led.c)(0x5D8D61E6)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\User -I ..\..\User\sdram -I ..\..\User\lcd -I ..\..\User\font -I ..\..\User\usart -I ..\..\Libraries\CMSIS\Include-I.\RTE\_LCD-IE:\MDK\ARM\PACK\Keil\STM32F4xx_DFP\2.12.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IE:\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F429xx -DUSE_STDPERIPH_DRIVER -DSTM32F429_439xx --C99-o ..\..\output\bsp_led.o --omf_browse ..\..\output\bsp_led.crf --depend ..\..\output\bsp_led.d)
 I (..\..\User\./led/bsp_led.h)(0x5D8D61E6)
@@ -1817,8 +1817,8 @@ I (..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x5D8D61E6)
 I (..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_ltdc.h)(0x5D8D61E6)
 I (..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sai.h)(0x5D8D61E6)
 I (E:\MDK\ARM\ARMCC\include\stdio.h)(0x57F606B8)
-F (..\..\User\touch\bsp_i2c_touch.c)(0x5D8D61E6)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\User -I ..\..\User\sdram -I ..\..\User\lcd -I ..\..\User\font -I ..\..\User\usart -I ..\..\Libraries\CMSIS\Include-I.\RTE\_LCD-IE:\MDK\ARM\PACK\Keil\STM32F4xx_DFP\2.12.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IE:\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F429xx -DUSE_STDPERIPH_DRIVER -DSTM32F429_439xx --C99-o ..\..\output\bsp_i2c_touch.o --omf_browse ..\..\output\bsp_i2c_touch.crf --depend ..\..\output\bsp_i2c_touch.d)
-I (..\..\User\./touch/bsp_i2c_touch.h)(0x5D8D61E6)
+F (..\..\User\touch\bsp_i2c_touch.c)(0x5D8DC202)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\User -I ..\..\User\sdram -I ..\..\User\lcd -I ..\..\User\font -I ..\..\User\usart -I ..\..\Libraries\CMSIS\Include-I.\RTE\_LCD-IE:\MDK\ARM\PACK\Keil\STM32F4xx_DFP\2.12.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IE:\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F429xx -DUSE_STDPERIPH_DRIVER -DSTM32F429_439xx --C99-o ..\..\output\bsp_i2c_touch.o --omf_browse ..\..\output\bsp_i2c_touch.crf --depend ..\..\output\bsp_i2c_touch.d)
+I (..\..\User\./touch/bsp_i2c_touch.h)(0x5D8DBA29)
 I (..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x5D8D61E6)
 I (..\..\Libraries\CMSIS\Include\core_cm4.h)(0x5D8D61E6)
 I (E:\MDK\ARM\ARMCC\include\stdint.h)(0x57F606B8)
@@ -1856,13 +1856,13 @@ I (..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma2d.h)(0x5D8D61E6)
 I (..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x5D8D61E6)
 I (..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_ltdc.h)(0x5D8D61E6)
 I (..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sai.h)(0x5D8D61E6)
-I (..\..\User\./touch/gt9xx.h)(0x5D8D61E6)
+I (..\..\User\./touch/gt9xx.h)(0x5D8DC39E)
 I (..\..\User\./usart/bsp_debug_usart.h)(0x5D8D61E6)
 I (E:\MDK\ARM\ARMCC\include\stdio.h)(0x57F606B8)
-F (..\..\User\touch\gt9xx.c)(0x5D8D61E6)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\User -I ..\..\User\sdram -I ..\..\User\lcd -I ..\..\User\font -I ..\..\User\usart -I ..\..\Libraries\CMSIS\Include-I.\RTE\_LCD-IE:\MDK\ARM\PACK\Keil\STM32F4xx_DFP\2.12.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IE:\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F429xx -DUSE_STDPERIPH_DRIVER -DSTM32F429_439xx --C99-o ..\..\output\gt9xx.o --omf_browse ..\..\output\gt9xx.crf --depend ..\..\output\gt9xx.d)
+F (..\..\User\touch\gt9xx.c)(0x5D8DC64A)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\User -I ..\..\User\sdram -I ..\..\User\lcd -I ..\..\User\font -I ..\..\User\usart -I ..\..\Libraries\CMSIS\Include-I.\RTE\_LCD-IE:\MDK\ARM\PACK\Keil\STM32F4xx_DFP\2.12.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IE:\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F429xx -DUSE_STDPERIPH_DRIVER -DSTM32F429_439xx --C99-o ..\..\output\gt9xx.o --omf_browse ..\..\output\gt9xx.crf --depend ..\..\output\gt9xx.d)
 I (E:\MDK\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (E:\MDK\ARM\ARMCC\include\string.h)(0x57F606B8)
-I (..\..\User\./touch/gt9xx.h)(0x5D8D61E6)
+I (..\..\User\./touch/gt9xx.h)(0x5D8DC39E)
 I (..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x5D8D61E6)
 I (..\..\Libraries\CMSIS\Include\core_cm4.h)(0x5D8D61E6)
 I (E:\MDK\ARM\ARMCC\include\stdint.h)(0x57F606B8)
@@ -1900,7 +1900,7 @@ I (..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma2d.h)(0x5D8D61E6)
 I (..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x5D8D61E6)
 I (..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_ltdc.h)(0x5D8D61E6)
 I (..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sai.h)(0x5D8D61E6)
-I (..\..\User\./touch/bsp_i2c_touch.h)(0x5D8D61E6)
+I (..\..\User\./touch/bsp_i2c_touch.h)(0x5D8DBA29)
 I (..\..\User\./lcd/bsp_lcd.h)(0x5D8D61E6)
 I (..\..\User\./sdram/bsp_sdram.h)(0x5D8D61E6)
 I (..\..\User\./font/fonts.h)(0x5D8D61E6)
@@ -1948,7 +1948,7 @@ I (..\..\User\./lcd/bsp_lcd.h)(0x5D8D61E6)
 I (..\..\User\./sdram/bsp_sdram.h)(0x5D8D61E6)
 I (E:\MDK\ARM\ARMCC\include\stdio.h)(0x57F606B8)
 I (..\..\User\./font/fonts.h)(0x5D8D61E6)
-I (..\..\User\./touch/gt9xx.h)(0x5D8D61E6)
+I (..\..\User\./touch/gt9xx.h)(0x5D8DC39E)
 F (..\..\User\flash\bsp_spi_flash.c)(0x5D8D61E6)(-c --cpu Cortex-M4.fp -D__MICROLIB -g -O1 --apcs=interwork --split_sections -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\User -I ..\..\User\sdram -I ..\..\User\lcd -I ..\..\User\font -I ..\..\User\usart -I ..\..\Libraries\CMSIS\Include-I.\RTE\_LCD-IE:\MDK\ARM\PACK\Keil\STM32F4xx_DFP\2.12.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-IE:\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F429xx -DUSE_STDPERIPH_DRIVER -DSTM32F429_439xx --C99-o ..\..\output\bsp_spi_flash.o --omf_browse ..\..\output\bsp_spi_flash.crf --depend ..\..\output\bsp_spi_flash.d)
 I (..\..\User\./flash/bsp_spi_flash.h)(0x5D8D61E6)
 I (..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x5D8D61E6)
