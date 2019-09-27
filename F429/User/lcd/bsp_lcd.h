@@ -9,7 +9,7 @@
 #include "./sdram/bsp_sdram.h"
 #include "./font/fonts.h"
 
-/*把这个宏设置成非0值 液晶屏使用RGB888色彩，若为0则使用ARGB1555色彩*/
+/*把这个宏设置成非0值 液晶屏使用RGB888色彩，若为0则使用RGB565色彩*/
 #define LCD_RGB_888  0
 
 
@@ -56,8 +56,8 @@ typedef struct
 #define  LCD_PIXEL_WIDTH    ((uint16_t)800)
 #define  LCD_PIXEL_HEIGHT   ((uint16_t)480)
 
-#define LCD_FRAME_BUFFER       ((uint32_t)0xD0000000)		//第一层首地址
-#define BUFFER_OFFSET          ((uint32_t)800*480*3)     //一层液晶的数据量
+#define LCD_FRAME_BUFFER       ((uint32_t)0xD0000000)
+#define BUFFER_OFFSET          ((uint32_t)800*480*3)    //sdram为16位的,液晶RGB888
 #define LCD_PIXCELS            ((uint32_t)800*480) 
 
 
@@ -316,36 +316,35 @@ typedef struct
 #define LTDC_B7_AF			          GPIO_AF_LTDC
 
 //控制信号线
-/*像素时钟CLK*/
 #define LTDC_CLK_GPIO_PORT        GPIOG
 #define LTDC_CLK_GPIO_CLK         RCC_AHB1Periph_GPIOG
 #define LTDC_CLK_GPIO_PIN         GPIO_Pin_7
 #define LTDC_CLK_PINSOURCE        GPIO_PinSource7
 #define LTDC_CLK_AF			          GPIO_AF_LTDC
-/*水平同步信号HSYNC*/
+
 #define LTDC_HSYNC_GPIO_PORT      GPIOI
 #define LTDC_HSYNC_GPIO_CLK       RCC_AHB1Periph_GPIOI
 #define LTDC_HSYNC_GPIO_PIN       GPIO_Pin_10
 #define LTDC_HSYNC_PINSOURCE      GPIO_PinSource10
 #define LTDC_HSYNC_AF			        GPIO_AF_LTDC
-/*垂直同步信号VSYNC*/
+
 #define LTDC_VSYNC_GPIO_PORT      GPIOI
 #define LTDC_VSYNC_GPIO_CLK       RCC_AHB1Periph_GPIOI
 #define LTDC_VSYNC_GPIO_PIN       GPIO_Pin_9
 #define LTDC_VSYNC_PINSOURCE      GPIO_PinSource9
 #define LTDC_VSYNC_AF			        GPIO_AF_LTDC
 
-/*数据使能信号DE*/
+
 #define LTDC_DE_GPIO_PORT         GPIOF
 #define LTDC_DE_GPIO_CLK          RCC_AHB1Periph_GPIOF
 #define LTDC_DE_GPIO_PIN          GPIO_Pin_10
 #define LTDC_DE_PINSOURCE         GPIO_PinSource10
 #define LTDC_DE_AF			          GPIO_AF_LTDC
-/*液晶屏使能信号DISP，高电平使能*/
+
 #define LTDC_DISP_GPIO_PORT        GPIOD
 #define LTDC_DISP_GPIO_CLK         RCC_AHB1Periph_GPIOD
 #define LTDC_DISP_GPIO_PIN         GPIO_Pin_4
-/*液晶屏背光信号，高电平使能*/
+
 #define LTDC_BL_GPIO_PORT         GPIOD
 #define LTDC_BL_GPIO_CLK          RCC_AHB1Periph_GPIOD
 #define LTDC_BL_GPIO_PIN          GPIO_Pin_7
@@ -356,7 +355,6 @@ typedef struct
 /** @defgroup STM32F429I_DISCOVERY_LCD_Exported_Functions
   * @{
   */ 
-void     LCD_DeInit(void);   
 void     LCD_Init(void);
 void     LCD_LayerInit(void);
 void     LCD_ChipSelect(FunctionalState NewState);
@@ -401,8 +399,16 @@ void     LCD_PowerOn(void);
 void     LCD_DisplayOn(void);
 void     LCD_DisplayOff(void);
 void     LCD_CtrlLinesWrite(GPIO_TypeDef* GPIOx, uint16_t CtrlPins, BitAction BitVal);
-
 void     PutPixel(int16_t x, int16_t y);
+
+
+
+/*汉字*/
+void LCD_DispChar_CH ( uint16_t usX, uint16_t usY, uint16_t usChar);
+void LCD_DispString_EN_CH( uint16_t usX, uint16_t usY, const uint8_t * pStr );
+void LCD_DisplayStringLine_EN_CH(uint16_t Line, uint8_t *ptr);
+void LCD_DispString_EN_CH ( uint16_t usX, uint16_t usY, const uint8_t * pStr );
+
 
 /**
   * @}
@@ -490,6 +496,7 @@ typedef struct
 #define LCD_COLOR_YELLOW         LCD_COLOR1555_YELLOW
 
 #define TRANSPARENCY 							0x7FFF	//透明
+
 
 /**
   * @brief  LCD Lines depending on the chosen fonts.
@@ -798,6 +805,20 @@ void     LCD_Triangle(pPoint Points, uint16_t PointCount);
 void     LCD_FillTriangle(uint16_t x1, uint16_t x2, uint16_t x3, uint16_t y1, uint16_t y2, uint16_t y3);
 void     LCD_CtrlLinesWrite(GPIO_TypeDef* GPIOx, uint16_t CtrlPins, BitAction BitVal);
 void     PutPixel(int16_t x, int16_t y);
+
+
+
+
+/*汉字*/
+void LCD_DispChar_CH ( uint16_t usX, uint16_t usY, uint16_t usChar);
+void LCD_DispString_EN_CH( uint16_t usX, uint16_t usY, const uint8_t * pStr );
+void LCD_DisplayStringLine_EN_CH(uint16_t Line, uint8_t *ptr);
+void LCD_DispString_EN_CH ( uint16_t usX, uint16_t usY, const uint8_t * pStr );
+
+
+
+
+
 /**
   * @}
   */

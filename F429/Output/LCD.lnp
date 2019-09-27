@@ -47,6 +47,10 @@
 "..\..\output\bsp_lcd.o"
 "..\..\output\fonts.o"
 "..\..\output\bsp_debug_usart.o"
+"..\..\output\bsp_i2c_touch.o"
+"..\..\output\gt9xx.o"
+"..\..\output\palette.o"
+"..\..\output\bsp_spi_flash.o"
 --library_type=microlib --strict --scatter "..\..\Output\LCD.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

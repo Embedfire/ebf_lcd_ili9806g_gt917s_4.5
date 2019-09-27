@@ -38,8 +38,10 @@
 ..\..\output\main.o: ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_ltdc.h
 ..\..\output\main.o: ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sai.h
 ..\..\output\main.o: ..\..\User\./led/bsp_led.h
-..\..\output\main.o: ..\..\User\./sdram/bsp_sdram.h
+..\..\output\main.o: ..\..\User\./usart/bsp_debug_usart.h
 ..\..\output\main.o: E:\MDK\ARM\ARMCC\Bin\..\include\stdio.h
+..\..\output\main.o: ..\..\User\./sdram/bsp_sdram.h
 ..\..\output\main.o: ..\..\User\./lcd/bsp_lcd.h
 ..\..\output\main.o: ..\..\User\./font/fonts.h
-..\..\output\main.o: E:\MDK\ARM\ARMCC\Bin\..\include\string.h
+..\..\output\main.o: ..\..\User\./touch/gt9xx.h
+..\..\output\main.o: ..\..\User\./touch/palette.h

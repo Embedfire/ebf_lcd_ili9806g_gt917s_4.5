@@ -2,9 +2,9 @@
   ******************************************************************************
   * @file    bsp_sdram.c
   * @author  fire
-  * @version V1.0
+  * @version V1.1
   * @date    2015-xx-xx
-  * @brief   LCD应用函数接口，支持RGB888/565 (不含中文显示)
+  * @brief   LCD应用函数接口，支持RGB888/565（含中文显示）
   ******************************************************************************
   * @attention
   *
@@ -18,6 +18,32 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "./lcd/bsp_lcd.h"
+
+
+
+/** @addtogroup Utilities
+  * @{
+  */ 
+
+/** @addtogroup STM32F4_DISCOVERY
+  * @{
+  */ 
+
+/** @addtogroup STM32F429I_DISCOVERY
+  * @{
+  */
+    
+/** @defgroup STM32F429I_DISCOVERY_LCD 
+  * @brief This file includes the LCD driver for (ILI9341) 
+  * @{
+  */ 
+
+/** @defgroup STM32F429I_DISCOVERY_LCD_Private_TypesDefinitions
+  * @{
+  */ 
+/**
+  * @}
+  */ 
 
 /** @defgroup STM32F429I_DISCOVERY_LCD_Private_Defines
   * @{
@@ -45,12 +71,11 @@
 /** @defgroup STM32F429I_DISCOVERY_LCD_Private_Variables
   * @{
   */ 
-/*用于存储当前选择的字体格式*/
 static sFONT *LCD_Currentfonts;
-/* 用于存储当前字体颜色和字体背景颜色的变量*/
+/* Global variables to set the written text color */
 static uint32_t CurrentTextColor   = 0x000000;
 static uint32_t CurrentBackColor   = 0xFFFFFF;
-/* 用于存储层对应的显存空间 和 当前选择的层*/
+/* Default LCD configuration with LCD Layer 1 */
 static uint32_t CurrentFrameBuffer = LCD_FRAME_BUFFER;
 static uint32_t CurrentLayer = LCD_BACKGROUND_LAYER;
 /**
@@ -65,21 +90,17 @@ static uint32_t CurrentLayer = LCD_BACKGROUND_LAYER;
 static void LCD_PolyLineRelativeClosed(pPoint Points, uint16_t PointCount, uint16_t Closed);
 static void LCD_GPIO_Config(void);
 
-
-
 /**
   * @}
   */ 
-/*实际测试可用的较快的配置(5寸)*/
-//#define HBP  24		//HSYNC后的无效像素
-//#define VBP   3		//VSYNC后的无效行数
 
-//#define HSW   1		//HSYNC宽度
-//#define VSW   1		//VSYNC宽度
+ 
 
-//#define HFP  10		//HSYNC前的无效像素
-//#define VFP   4		//VSYNC前的无效行数
-
+/**
+  * @brief  Initializes the LCD.
+  * @param  None
+  * @retval None
+  */
 /*根据液晶数据手册的参数配置*/
 #define HBP  46		//HSYNC后的无效像素
 #define VBP  23		//VSYNC后的无效行数
@@ -87,7 +108,7 @@ static void LCD_GPIO_Config(void);
 #define HSW   1		//HSYNC宽度
 #define VSW   1		//VSYNC宽度
 
-#define HFP  20		//HSYNC前的无效像素
+#define HFP  22		//HSYNC前的无效像素
 #define VFP   22		//VSYNC前的无效行数
 
 
@@ -116,7 +137,7 @@ void LCD_Init(void)
 	
 	/* 配置 PLLSAI 分频器，它的输出作为像素同步时钟CLK*/
   /* PLLSAI_VCO 输入时钟 = HSE_VALUE/PLL_M = 1 Mhz */
-  /* PLLSAI_VCO 输出时钟 = PLLSAI_VCO输入 * PLLSAI_N = 416 Mhz */
+  /* PLLSAI_VCO 输出时钟 = PLLSAI_VCO输入 * PLLSAI_N = 420 Mhz */
   /* PLLLCDCLK = PLLSAI_VCO 输出/PLLSAI_R = 420/6  Mhz */
   /* LTDC 时钟频率 = PLLLCDCLK / DIV = 420/6/8 = 8.75 Mhz */
 	/* LTDC时钟太高会导花屏，若对刷屏速度要求不高，降低时钟频率可减少花屏现象*/
@@ -253,8 +274,8 @@ void LCD_LayerInit(void)
 
 
 /**
-  * @brief  选择要控制的层.
-  * @param  Layerx: 选择要操作前景层(第2层)还是背景层(第1层)
+  * @brief  Sets the LCD Layer.
+  * @param  Layerx: specifies the Layer foreground or background.
   * @retval None
   */
 void LCD_SetLayer(uint32_t Layerx)
@@ -272,9 +293,9 @@ void LCD_SetLayer(uint32_t Layerx)
 }  
 
 /**
-  * @brief  设置字体的颜色及字体的背景颜色
-  * @param  TextColor: 字体颜色
-  * @param  BackColor: 字体的背景颜色
+  * @brief  Sets the LCD Text and Background colors.
+  * @param  TextColor: specifies the Text Color.
+  * @param  BackColor: specifies the Background Color.
   * @retval None
   */
 void LCD_SetColors(uint32_t TextColor, uint32_t BackColor) 
@@ -284,9 +305,11 @@ void LCD_SetColors(uint32_t TextColor, uint32_t BackColor)
 }
 
 /**
-  * @brief 获取当前设置的字体颜色和字体的背景颜色
-  * @param  TextColor: 指向字体颜色的指针
-  * @param  BackColor: 指向字体背景颜色的指针
+  * @brief  Gets the LCD Text and Background colors.
+  * @param  TextColor: pointer to the variable that will contain the Text 
+            Color.
+  * @param  BackColor: pointer to the variable that will contain the Background 
+            Color.
   * @retval None
   */
 void LCD_GetColors(uint32_t *TextColor, uint32_t *BackColor)
@@ -296,8 +319,8 @@ void LCD_GetColors(uint32_t *TextColor, uint32_t *BackColor)
 }
 
 /**
-  * @brief  设置字体颜色
-  * @param  Color: 字体颜色
+  * @brief  Sets the Text color.
+  * @param  Color: specifies the Text color code RGB(5-6-5).
   * @retval None
   */
 void LCD_SetTextColor(uint32_t Color)
@@ -306,8 +329,8 @@ void LCD_SetTextColor(uint32_t Color)
 }
 
 /**
-  * @brief  设置字体的背景颜色
-  * @param  Color: 字体的背景颜色
+  * @brief  Sets the Background color.
+  * @param  Color: specifies the Background color code RGB(5-6-5).
   * @retval None
   */
 void LCD_SetBackColor(uint32_t Color)
@@ -316,8 +339,8 @@ void LCD_SetBackColor(uint32_t Color)
 }
 
 /**
-  * @brief  设置字体格式(英文)
-  * @param  fonts: 选择要设置的字体格式
+  * @brief  Sets the Text Font.
+  * @param  fonts: specifies the font to be used.
   * @retval None
   */
 void LCD_SetFont(sFONT *fonts)
@@ -559,6 +582,189 @@ void LCD_DisplayStringLine(uint16_t Line, uint8_t *ptr)
   }
 }
 
+
+
+
+/**
+ * @brief  在显示器上显示一个中文字符
+ * @param  usX ：在特定扫描方向下字符的起始X坐标
+ * @param  usY ：在特定扫描方向下字符的起始Y坐标
+ * @param  usChar ：要显示的中文字符（国标码）
+ * @retval 无
+ */ 
+void LCD_DispChar_CH ( uint16_t usX, uint16_t usY, uint16_t usChar)
+{
+	uint8_t ucPage, ucColumn;
+	uint8_t ucBuffer [ 24*24/8 ];	
+
+  uint32_t usTemp; 	
+	
+	
+	uint32_t  xpos =0;
+  uint32_t  Xaddress = 0;
+  
+	/*xpos表示当前行的显存偏移位置*/
+  xpos = usX*LCD_PIXEL_WIDTH*3;
+	
+	/*Xaddress表示像素点*/
+  Xaddress += usY;
+	   
+  macGetGBKCode ( ucBuffer, usChar );	//取字模数据
+	
+	/*ucPage表示当前行数*/
+	for ( ucPage = 0; ucPage < macHEIGHT_CH_CHAR; ucPage ++ )
+	{
+    /* 取出3个字节的数据，在lcd上即是一个汉字的一行 */
+		usTemp = ucBuffer [ ucPage * 3 ];
+		usTemp = ( usTemp << 8 );
+		usTemp |= ucBuffer [ ucPage * 3 + 1 ];
+		usTemp = ( usTemp << 8 );
+		usTemp |= ucBuffer [ ucPage * 3 + 2];
+	
+		
+		for ( ucColumn = 0; ucColumn < macWIDTH_CH_CHAR; ucColumn ++ ) 
+		{			
+			if ( usTemp & ( 0x01 << 23 ) )  //高位在前 				
+			{
+				//字体色
+			  *(__IO uint16_t*)(CurrentFrameBuffer + (3*Xaddress) + xpos) = (0x00FFFF & CurrentTextColor);        //GB
+        *(__IO uint8_t*)(CurrentFrameBuffer + (3*Xaddress) + xpos+2) = (0xFF0000 & CurrentTextColor) >> 16; //R
+
+			}				
+			else	
+			{
+				//背景色
+				*(__IO uint16_t*)(CurrentFrameBuffer + (3*Xaddress) + xpos) = (0x00FFFF & CurrentBackColor);        //GB
+        *(__IO uint8_t*)(CurrentFrameBuffer + (3*Xaddress) + xpos+2) = (0xFF0000 & CurrentBackColor) >> 16; //R
+
+			}	
+			/*指向当前行的下一个点*/	
+			Xaddress++;			
+			usTemp <<= 1;
+			
+		}
+		/*显示完一行*/
+		/*指向字符显示矩阵下一行的第一个像素点*/
+		Xaddress += (LCD_PIXEL_WIDTH - macWIDTH_CH_CHAR);
+		
+	}
+}
+
+
+/**
+ * @brief  在显示器上显示中英文字符串,超出液晶宽度时会自动换行。
+					 中英文混显示时，请把英文字体设置为Font16x24格式
+ * @param  Line ：行(也可理解为y坐标)
+ * @param  Column ：列（也可理解为x坐标）
+ * @param  pStr ：要显示的字符串的首地址
+ * @retval 无
+ */
+void LCD_DispString_EN_CH( uint16_t Line, uint16_t Column, const uint8_t * pStr )
+{
+	uint16_t usCh;
+	
+	
+	while( * pStr != '\0' )
+	{
+		if ( * pStr <= 126 )	           	//英文字符
+		{
+	
+			/*自动换行*/
+			if ( ( Column + LCD_Currentfonts->Width ) > LCD_PIXEL_WIDTH )
+			{
+				Column = 0;
+				Line += LCD_Currentfonts->Height;
+			}
+			
+			if ( ( Line + LCD_Currentfonts->Height ) > LCD_PIXEL_HEIGHT )
+			{
+				Column = 0;
+				Line = 0;
+			}			
+					
+			LCD_DisplayChar(Line,Column,*pStr);
+			
+			Column += LCD_Currentfonts->Width;
+		
+		  pStr ++;
+
+		}
+		
+		else	                            //汉字字符
+		{
+			if ( ( Column + macWIDTH_CH_CHAR ) > LCD_PIXEL_WIDTH )
+			{
+				Column = 0;
+				Line += macHEIGHT_CH_CHAR;
+			}
+			
+			if ( ( Line + macHEIGHT_CH_CHAR ) > LCD_PIXEL_HEIGHT )
+			{
+				Column = 0;
+				Line = 0;
+			}	
+			
+			/*一个汉字两字节*/
+			usCh = * ( uint16_t * ) pStr;				
+			usCh = ( usCh << 8 ) + ( usCh >> 8 );		
+
+			LCD_DispChar_CH (Line,Column, usCh);
+			
+			Column += macWIDTH_CH_CHAR;
+			
+			pStr += 2;           //一个汉字两个字节 
+		
+    }
+		
+  }
+	
+	
+} 
+
+/**
+  * @brief  显示一行字符，若超出液晶宽度，不自动换行。
+						中英混显时，请把英文字体设置为Font16x24格式
+  * @param  Line: 要显示的行编号LINE(0) - LINE(N)
+  * @param  *ptr: 要显示的字符串指针
+  * @retval None
+  */
+void LCD_DisplayStringLine_EN_CH(uint16_t Line, uint8_t *ptr)
+{  
+  uint16_t refcolumn = 0;
+  /* Send the string character by character on lCD */
+  while ((refcolumn < LCD_PIXEL_WIDTH) && ((*ptr != 0) & (((refcolumn + LCD_Currentfonts->Width) & 0xFFFF) >= LCD_Currentfonts->Width)))
+  {
+    /* Display one character on LCD */
+		if ( * ptr <= 126 )	           	//英文字符
+		{
+					
+			LCD_DisplayChar(Line, refcolumn, *ptr);
+			/* Decrement the column position by width */
+			refcolumn += LCD_Currentfonts->Width;
+			/* Point on the next character */
+			ptr++;
+		}
+		
+		else	                            //汉字字符
+		{	
+			uint16_t usCh;
+			
+			/*一个汉字两字节*/
+			usCh = * ( uint16_t * ) ptr;				
+			usCh = ( usCh << 8 ) + ( usCh >> 8 );		
+			
+			LCD_DispChar_CH ( Line, refcolumn, usCh );
+			refcolumn += macWIDTH_CH_CHAR;
+
+			ptr += 2; 		
+    }		
+
+		
+
+  }
+}
+
+
 /**
   * @brief  Sets a display window
   * @param  Xpos: specifies the X bottom left position from 0 to 240.
@@ -603,11 +809,12 @@ void LCD_WindowModeDisable(void)
 }
 
 /**
-  * @brief 显示一条直线
-  * @param Xpos: 直线起点的x坐标
-  * @param Ypos: 直线起点的y坐标
-  * @param Length: 直线的长度
-  * @param Direction: 直线的方向，可输入LCD_DIR_HORIZONTAL(水平方向) LCD_DIR_VERTICAL(垂直方向).
+  * @brief  Displays a line.
+  * @param Xpos: specifies the X position, can be a value from 0 to 240.
+  * @param Ypos: specifies the Y position, can be a value from 0 to 320.
+  * @param Length: line length.
+  * @param Direction: line direction.
+  *   This parameter can be one of the following values: LCD_DIR_HORIZONTAL or LCD_DIR_VERTICAL.
   * @retval None
   */
 void LCD_DrawLine(uint16_t Xpos, uint16_t Ypos, uint16_t Length, uint8_t Direction)
@@ -617,15 +824,13 @@ void LCD_DrawLine(uint16_t Xpos, uint16_t Ypos, uint16_t Length, uint8_t Directi
   uint32_t  Xaddress = 0;
   uint16_t Red_Value = 0, Green_Value = 0, Blue_Value = 0;
   
-	/*计算目标地址*/
   Xaddress = CurrentFrameBuffer + 3*(LCD_PIXEL_WIDTH*Ypos + Xpos);
  
-	/*提取颜色分量*/
   Red_Value = (0xFF0000 & CurrentTextColor) >>16;
   Blue_Value = 0x0000FF & CurrentTextColor;
   Green_Value = (0x00FF00 & CurrentTextColor)>>8 ;
 
-  /* 配置DMA2D */    
+  /* Configure DMA2D */    
   DMA2D_DeInit();  
   DMA2D_InitStruct.DMA2D_Mode = DMA2D_R2M;       
   DMA2D_InitStruct.DMA2D_CMode = DMA2D_RGB888;      
@@ -635,14 +840,17 @@ void LCD_DrawLine(uint16_t Xpos, uint16_t Ypos, uint16_t Length, uint8_t Directi
   DMA2D_InitStruct.DMA2D_OutputAlpha = 0x0F;                  
   DMA2D_InitStruct.DMA2D_OutputMemoryAdd = Xaddress;                  
   
-	/*水平方向*/
   if(Direction == LCD_DIR_HORIZONTAL)
   {                                                      
     DMA2D_InitStruct.DMA2D_OutputOffset = 0;                
-    DMA2D_InitStruct.DMA2D_NumberOfLine = 1;            
-    DMA2D_InitStruct.DMA2D_PixelPerLine = Length; 
+    DMA2D_InitStruct.DMA2D_NumberOfLine = 1;   
+
+		
+	  DMA2D_InitStruct.DMA2D_PixelPerLine = (Xaddress%LCD_PIXEL_WIDTH)+Length  >  LCD_PIXEL_WIDTH ? LCD_PIXEL_WIDTH-(Xaddress%LCD_PIXEL_WIDTH) :Length;
+		
+//    DMA2D_InitStruct.DMA2D_PixelPerLine = Length; 
   }
-  else /*垂直方向*/
+  else
   {                                                            
     DMA2D_InitStruct.DMA2D_OutputOffset = LCD_PIXEL_WIDTH - 1;                
     DMA2D_InitStruct.DMA2D_NumberOfLine = Length;            
@@ -650,12 +858,13 @@ void LCD_DrawLine(uint16_t Xpos, uint16_t Ypos, uint16_t Length, uint8_t Directi
   }
   
   DMA2D_Init(&DMA2D_InitStruct);  
-  /*开始DMA2D传输 */ 
+  /* Start Transfer */ 
   DMA2D_StartTransfer();  
-  /*等待传输结束 */
+  /* Wait for CTC Flag activation */
   while(DMA2D_GetFlagStatus(DMA2D_FLAG_TC) == RESET)
   {
-  }  
+  }
+  
 }
 
 /**
@@ -987,11 +1196,11 @@ void LCD_WriteBMP(uint32_t BmpAddress)
 }
 
 /**
-  * @brief  绘制实心矩形
-  * @param  Xpos: 起始X坐标
-  * @param  Ypos: 起始Y坐标
-  * @param  Height: 矩形高
-  * @param  Width: 矩形宽
+  * @brief  Displays a full rectangle.
+  * @param  Xpos: specifies the X position, can be a value from 0 to 240.
+  * @param  Ypos: specifies the Y position, can be a value from 0 to 320.
+  * @param  Height: rectangle height.
+  * @param  Width: rectangle width.
   * @retval None
   */
 void LCD_DrawFullRect(uint16_t Xpos, uint16_t Ypos, uint16_t Width, uint16_t Height)
@@ -1007,7 +1216,7 @@ void LCD_DrawFullRect(uint16_t Xpos, uint16_t Ypos, uint16_t Width, uint16_t Hei
   
   Xaddress = CurrentFrameBuffer + 3*(LCD_PIXEL_WIDTH*Ypos + Xpos);
   
-  /* 配置DMA2D DMA2D */
+  /* configure DMA2D */
   DMA2D_DeInit();
   DMA2D_InitStruct.DMA2D_Mode = DMA2D_R2M;       
   DMA2D_InitStruct.DMA2D_CMode = DMA2D_RGB888;      
@@ -1021,10 +1230,10 @@ void LCD_DrawFullRect(uint16_t Xpos, uint16_t Ypos, uint16_t Width, uint16_t Hei
   DMA2D_InitStruct.DMA2D_PixelPerLine = Width;
   DMA2D_Init(&DMA2D_InitStruct); 
   
-  /* 开始DMA2D传输 */ 
+  /* Start Transfer */ 
   DMA2D_StartTransfer();
   
-  /* 等待传输结束 */
+  /* Wait for CTC Flag activation */
   while(DMA2D_GetFlagStatus(DMA2D_FLAG_TC) == RESET)
   {
   } 
@@ -1041,6 +1250,7 @@ void LCD_DrawFullRect(uint16_t Xpos, uint16_t Ypos, uint16_t Width, uint16_t Hei
   */
 void LCD_DrawFullCircle(uint16_t Xpos, uint16_t Ypos, uint16_t Radius)
 {
+
   int32_t  D;    /* Decision Variable */ 
   uint32_t  CurX;/* Current X Value */
   uint32_t  CurY;/* Current Y Value */ 
@@ -1048,7 +1258,7 @@ void LCD_DrawFullCircle(uint16_t Xpos, uint16_t Ypos, uint16_t Radius)
   D = 3 - (Radius << 1);
   
   CurX = 0;
-  CurY = Radius;
+  CurY = Radius;	
   
   while (CurX <= CurY)
   {
@@ -1076,6 +1286,8 @@ void LCD_DrawFullCircle(uint16_t Xpos, uint16_t Ypos, uint16_t Radius)
   }
   
   LCD_DrawCircle(Xpos, Ypos, Radius);  
+	
+	
 }
 
 /**
@@ -1435,11 +1647,7 @@ void LCD_CtrlLinesWrite(GPIO_TypeDef* GPIOx, uint16_t CtrlPins, BitAction BitVal
 }
 
 
- /**
-  * @brief  初始化控制LCD的IO
-  * @param  无
-  * @retval 无
-  */
+
 static void LCD_GPIO_Config(void)
 { 
 	GPIO_InitTypeDef GPIO_InitStruct;
@@ -1584,7 +1792,7 @@ static void LCD_GPIO_Config(void)
   GPIO_Init(LTDC_DE_GPIO_PORT, &GPIO_InitStruct);
   GPIO_PinAFConfig(LTDC_DE_GPIO_PORT, LTDC_DE_PINSOURCE, LTDC_DE_AF);
   
-  //背光BL 及液晶使能信号DISP
+  //BL DISP
   GPIO_InitStruct.GPIO_Pin = LTDC_DISP_GPIO_PIN;                             
   GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
@@ -1605,12 +1813,12 @@ static void LCD_GPIO_Config(void)
 }
 
 /**
-  * @brief  显示一个像素点
-  * @param  x: 像素点的x坐标
-  * @param  y: 像素点的y坐标
+  * @brief  Displays a pixel.
+  * @param  x: pixel x.
+  * @param  y: pixel y.  
   * @retval None
   */
-void PutPixel(int16_t x, int16_t y)
+ void PutPixel(int16_t x, int16_t y) 
 { 
   if(x < 0 || x > LCD_PIXEL_WIDTH || y < 0 || y > LCD_PIXEL_HEIGHT)
   {
@@ -1618,7 +1826,7 @@ void PutPixel(int16_t x, int16_t y)
   }
 #if 0
  LCD_DrawLine(x, y, 1, LCD_DIR_HORIZONTAL);
-#else /*这样直接描点效率估计会高点*/
+#else /*这样直接描点效率估计高点吧*/
  {
 	  /*RGB888*/
 	  uint32_t  Xaddress =0;
@@ -1716,7 +1924,6 @@ static void LCD_GPIO_Config(void);
  * @retval None
  */
 
-
 /*根据液晶数据手册的参数配置*/
 #define HBP  46		//HSYNC后的无效像素
 #define VBP  23		//VSYNC后的无效行数
@@ -1724,7 +1931,7 @@ static void LCD_GPIO_Config(void);
 #define HSW   1		//HSYNC宽度
 #define VSW   1		//VSYNC宽度
 
-#define HFP  20		//HSYNC前的无效像素
+#define HFP  22		//HSYNC前的无效像素
 #define VFP   22		//VSYNC前的无效行数
 
 
@@ -1763,14 +1970,14 @@ void LCD_Init(void)
 
 	/* 配置 PLLSAI 分频器，它的输出作为像素同步时钟CLK*/
   /* PLLSAI_VCO 输入时钟 = HSE_VALUE/PLL_M = 1 Mhz */
-  /* PLLSAI_VCO 输出时钟 = PLLSAI_VCO输入 * PLLSAI_N = 384 Mhz */
-  /* PLLLCDCLK = PLLSAI_VCO 输出/PLLSAI_R = 384/6  Mhz */
-  /* LTDC 时钟频率 = PLLLCDCLK / DIV = 384/4/4 = 24 Mhz */
+  /* PLLSAI_VCO 输出时钟 = PLLSAI_VCO输入 * PLLSAI_N = 250 Mhz */
+  /* PLLLCDCLK = PLLSAI_VCO 输出/PLLSAI_R = 250/5  Mhz */
+  /* LTDC 时钟频率 = PLLLCDCLK / DIV = 250/5/2 = 25 Mhz */
 	/* LTDC时钟太高会导花屏，若对刷屏速度要求不高，降低时钟频率可减少花屏现象*/
 	/* 以下函数三个参数分别为：PLLSAIN,PLLSAIQ,PLLSAIR，其中PLLSAIQ与LTDC无关*/
- RCC_PLLSAIConfig(384, 7, 4);
+ RCC_PLLSAIConfig(250, 7, 5);
  	/*以下函数的参数为DIV值*/
- RCC_LTDCCLKDivConfig(RCC_PLLSAIDivR_Div4);
+ RCC_LTDCCLKDivConfig(RCC_PLLSAIDivR_Div2);
 
  /* Enable PLLSAI Clock */
  RCC_PLLSAICmd(ENABLE);
@@ -1821,7 +2028,7 @@ void LCD_LayerInit(void)
 	LTDC_Layer_InitStruct.LTDC_VerticalStop = VSW+VBP+LCD_PIXEL_HEIGHT-1;
 
  /* Pixel Format configuration*/
- LTDC_Layer_InitStruct.LTDC_PixelFormat = LTDC_Pixelformat_ARGB1555;
+ LTDC_Layer_InitStruct.LTDC_PixelFormat = LTDC_Pixelformat_RGB565;
  /* Alpha constant (255 totally opaque) */
  LTDC_Layer_InitStruct.LTDC_ConstantAlpha = 255;
  /* Default Color configuration (configure A,R,G,B component values) */
@@ -1855,7 +2062,7 @@ void LCD_LayerInit(void)
 
   /* Configure Layer2 */
  /* Pixel Format configuration*/
- LTDC_Layer_InitStruct.LTDC_PixelFormat = LTDC_Pixelformat_ARGB1555;
+ LTDC_Layer_InitStruct.LTDC_PixelFormat = LTDC_Pixelformat_RGB565;
  
   /* Start Address configuration : the LCD Frame buffer is defined on SDRAM w/ Offset */
  LTDC_Layer_InitStruct.LTDC_CFBStartAdress = LCD_FRAME_BUFFER + BUFFER_OFFSET;
@@ -1883,6 +2090,7 @@ void LCD_LayerInit(void)
   /* dithering activation */
  LTDC_DitherCmd(ENABLE);
 }
+
 
 
 
@@ -2020,7 +2228,7 @@ void LCD_ClearLine(uint16_t Line)
  */
 void LCD_Clear(uint16_t Color)
 {
-   
+  
  DMA2D_InitTypeDef      DMA2D_InitStruct;
 
  uint16_t Red_Value = 0, Green_Value = 0, Blue_Value = 0;
@@ -2037,7 +2245,7 @@ void LCD_Clear(uint16_t Color)
  DMA2D_InitStruct.DMA2D_OutputGreen = Green_Value;
  DMA2D_InitStruct.DMA2D_OutputBlue = Blue_Value;
  DMA2D_InitStruct.DMA2D_OutputRed = Red_Value;
- DMA2D_InitStruct.DMA2D_OutputAlpha = (Color&0x8000) ? 0xFF:0x00;		//设置透明度
+ DMA2D_InitStruct.DMA2D_OutputAlpha = 0x0F;
  DMA2D_InitStruct.DMA2D_OutputMemoryAdd = CurrentFrameBuffer;
  DMA2D_InitStruct.DMA2D_OutputOffset = 0;
  DMA2D_InitStruct.DMA2D_NumberOfLine = LCD_PIXEL_HEIGHT;
@@ -2053,6 +2261,7 @@ void LCD_Clear(uint16_t Color)
  }
 
  LCD_SetTextColor(CurrentTextColor);
+ 
 }
 
 /**
@@ -2192,6 +2401,187 @@ void LCD_DisplayStringLine(uint16_t Line, uint8_t *ptr)
    /* Point on the next character */
    ptr++;
  }
+}
+
+
+
+
+/**
+ * @brief  在显示器上显示一个中文字符
+ * @param  usX ：在特定扫描方向下字符的起始X坐标
+ * @param  usY ：在特定扫描方向下字符的起始Y坐标
+ * @param  usChar ：要显示的中文字符（国标码）
+ * @retval 无
+ */ 
+void LCD_DispChar_CH ( uint16_t usX, uint16_t usY, uint16_t usChar)
+{
+	uint8_t ucPage, ucColumn;
+	uint8_t ucBuffer [ 24*24/8 ];	
+
+  uint32_t usTemp; 	
+	
+	
+	uint32_t  xpos =0;
+  uint32_t  Xaddress = 0;
+  
+	/*xpos表示当前行的显存偏移位置*/
+  xpos = usX*LCD_PIXEL_WIDTH*2;
+	
+	/*Xaddress表示像素点*/
+  Xaddress += usY;
+	   
+  macGetGBKCode ( ucBuffer, usChar );	//取字模数据
+	
+	/*ucPage表示当前行数*/
+	for ( ucPage = 0; ucPage < macHEIGHT_CH_CHAR; ucPage ++ )
+	{
+    /* 取出3个字节的数据，在lcd上即是一个汉字的一行 */
+		usTemp = ucBuffer [ ucPage * 3 ];
+		usTemp = ( usTemp << 8 );
+		usTemp |= ucBuffer [ ucPage * 3 + 1 ];
+		usTemp = ( usTemp << 8 );
+		usTemp |= ucBuffer [ ucPage * 3 + 2];
+	
+		
+		for ( ucColumn = 0; ucColumn < macWIDTH_CH_CHAR; ucColumn ++ ) 
+		{			
+			if ( usTemp & ( 0x01 << 23 ) )  //高位在前 				
+			{
+				//字体色
+        /* Write data value to all SDRAM memory */
+        *(__IO uint16_t*) (CurrentFrameBuffer + (2*Xaddress) + xpos) = CurrentTextColor;
+
+			}				
+			else	
+			{
+				//背景色
+         /* Write data value to all SDRAM memory */
+        *(__IO uint16_t*) (CurrentFrameBuffer + (2*Xaddress) + xpos) = CurrentBackColor;
+			}	
+			/*指向当前行的下一个点*/	
+			Xaddress++;			
+			usTemp <<= 1;
+			
+		}
+		/*显示完一行*/
+		/*指向字符显示矩阵下一行的第一个像素点*/
+		Xaddress += (LCD_PIXEL_WIDTH - macWIDTH_CH_CHAR);
+		
+	}
+}
+
+
+/**
+ * @brief  在显示器上显示中英文字符串,超出液晶宽度时会自动换行。
+					 中英文混显示时，请把英文字体设置为Font16x24格式
+ * @param  Line ：行(也可理解为y坐标)
+ * @param  Column ：列（也可理解为x坐标）
+ * @param  pStr ：要显示的字符串的首地址
+ * @retval 无
+ */
+void LCD_DispString_EN_CH( uint16_t Line, uint16_t Column, const uint8_t * pStr )
+{
+	uint16_t usCh;
+	
+	
+	while( * pStr != '\0' )
+	{
+		if ( * pStr <= 126 )	           	//英文字符
+		{
+	
+			/*自动换行*/
+			if ( ( Column + LCD_Currentfonts->Width ) > LCD_PIXEL_WIDTH )
+			{
+				Column = 0;
+				Line += LCD_Currentfonts->Height;
+			}
+			
+			if ( ( Line + LCD_Currentfonts->Height ) > LCD_PIXEL_HEIGHT )
+			{
+				Column = 0;
+				Line = 0;
+			}			
+					
+			LCD_DisplayChar(Line,Column,*pStr);
+			
+			Column += LCD_Currentfonts->Width;
+		
+		  pStr ++;
+
+		}
+		
+		else	                            //汉字字符
+		{
+			if ( ( Column + macWIDTH_CH_CHAR ) > LCD_PIXEL_WIDTH )
+			{
+				Column = 0;
+				Line += macHEIGHT_CH_CHAR;
+			}
+			
+			if ( ( Line + macHEIGHT_CH_CHAR ) > LCD_PIXEL_HEIGHT )
+			{
+				Column = 0;
+				Line = 0;
+			}	
+			
+			/*一个汉字两字节*/
+			usCh = * ( uint16_t * ) pStr;				
+			usCh = ( usCh << 8 ) + ( usCh >> 8 );		
+
+			LCD_DispChar_CH (Line,Column, usCh);
+			
+			Column += macWIDTH_CH_CHAR;
+			
+			pStr += 2;           //一个汉字两个字节 
+		
+    }
+		
+  }
+	
+	
+} 
+
+/**
+  * @brief  显示一行字符，若超出液晶宽度，不自动换行。
+						中英混显时，请把英文字体设置为Font16x24格式
+  * @param  Line: 要显示的行编号LINE(0) - LINE(N)
+  * @param  *ptr: 要显示的字符串指针
+  * @retval None
+  */
+void LCD_DisplayStringLine_EN_CH(uint16_t Line, uint8_t *ptr)
+{  
+  uint16_t refcolumn = 0;
+  /* Send the string character by character on lCD */
+  while ((refcolumn < LCD_PIXEL_WIDTH) && ((*ptr != 0) & (((refcolumn + LCD_Currentfonts->Width) & 0xFFFF) >= LCD_Currentfonts->Width)))
+  {
+    /* Display one character on LCD */
+		if ( * ptr <= 126 )	           	//英文字符
+		{
+					
+			LCD_DisplayChar(Line, refcolumn, *ptr);
+			/* Decrement the column position by width */
+			refcolumn += LCD_Currentfonts->Width;
+			/* Point on the next character */
+			ptr++;
+		}
+		
+		else	                            //汉字字符
+		{	
+			uint16_t usCh;
+			
+			/*一个汉字两字节*/
+			usCh = * ( uint16_t * ) ptr;				
+			usCh = ( usCh << 8 ) + ( usCh >> 8 );		
+			
+			LCD_DispChar_CH ( Line, refcolumn, usCh );
+			refcolumn += macWIDTH_CH_CHAR;
+
+			ptr += 2; 		
+    }		
+
+		
+
+  }
 }
 
 /**
@@ -2674,6 +3064,7 @@ void LCD_DrawFullCircle(uint16_t Xpos, uint16_t Ypos, uint16_t Radius)
 
  CurX = 0;
  CurY = Radius;
+	
 
  while (CurX <= CurY)
  {

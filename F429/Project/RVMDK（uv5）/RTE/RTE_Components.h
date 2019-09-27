@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'BF-F429' 
+ * Project: 'BH-F429' 
  * Target:  'LCD' 
  */
 

@@ -38,3 +38,7 @@
 ..\..\output\stm32f4xx_it.o: ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h
 ..\..\output\stm32f4xx_it.o: ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_ltdc.h
 ..\..\output\stm32f4xx_it.o: ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sai.h
+..\..\output\stm32f4xx_it.o: ..\..\User\./usart/bsp_debug_usart.h
+..\..\output\stm32f4xx_it.o: E:\MDK\ARM\ARMCC\Bin\..\include\stdio.h
+..\..\output\stm32f4xx_it.o: ..\..\User\./touch/bsp_i2c_touch.h
+..\..\output\stm32f4xx_it.o: ..\..\User\./led/bsp_led.h

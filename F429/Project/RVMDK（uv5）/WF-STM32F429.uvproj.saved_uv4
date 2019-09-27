@@ -351,7 +351,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F429_439xx,</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\User</IncludePath>
+              <IncludePath>..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\User;..\..\User\sdram;..\..\User\lcd;..\..\User\font;..\..\User\usart</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -666,6 +666,21 @@
               <FileName>bsp_debug_usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\User\usart\bsp_debug_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_i2c_touch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\touch\bsp_i2c_touch.c</FilePath>
+            </File>
+            <File>
+              <FileName>gt9xx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\touch\gt9xx.c</FilePath>
+            </File>
+            <File>
+              <FileName>palette.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\touch\palette.c</FilePath>
             </File>
           </Files>
         </Group>
