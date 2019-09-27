@@ -676,7 +676,7 @@ Output:
 		
 		//获取触摸IC的型号
     GTP_Read_Version(); 
-#if 0		
+	
 		//根据IC的型号指向不同的配置
 		if(touchIC == GT9157)
 		{
@@ -686,17 +686,23 @@ Output:
     else if(touchIC == GT917S)
     {
 			cfg_info =  CTP_CFG_GT917S; //指向寄存器配置
-			cfg_info_len = CFG_GROUP_LEN(CTP_CFG_GT917S);//计算配置表的大小      
+			cfg_info_len = CFG_GROUP_LEN(CTP_CFG_GT917S);//计算配置表的大小  
+      cfg_num =cfg_info_len - 3;   
     }
 		else
 		{
 			cfg_info =  CTP_CFG_GT911;//指向寄存器配置
 			cfg_info_len = CFG_GROUP_LEN(CTP_CFG_GT911) ;//计算配置表的大小
+      
 		}			
 
     memset(&config[GTP_ADDR_LENGTH], 0, GTP_CONFIG_MAX_LENGTH);
     memcpy(&config[GTP_ADDR_LENGTH], cfg_info, cfg_info_len);
-		
+    
+    printf("%d\n", touchIC); 
+    
+    
+#if 0			
     //计算要写入checksum寄存器的值
     check_sum = 0;
     for (i = GTP_ADDR_LENGTH; i < cfg_num+GTP_ADDR_LENGTH; i++)
@@ -789,6 +795,14 @@ int32_t GTP_Read_Version(void)
 				//GT911芯片
 				if(buf[2] == '9' && buf[3] == '1' && buf[4] == '1')
 					touchIC = GT911;
+    }
+    else if (buf[5] == 'S')
+    {
+        GTP_INFO("IC2 Version: %c%c%c%c_%02x%02x", buf[2], buf[3], buf[4], buf[5], buf[7], buf[6]);
+				
+				//GT9157芯片
+				if(buf[2] == '9' && buf[3] == '1' && buf[4] == '7' && buf[5] == 'S')
+					touchIC = GT917S;        
     }
     else
     {
